@@ -1,0 +1,84 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn import metrics
+from sklearn import svm
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.impute import SimpleImputer
+
+# Load the dataset
+df = pd.read_csv("D:/project/Copy of loan.csv")
+
+# Data exploration
+df.head()
+df.tail()
+df.info()
+
+# Handling missing values
+df.isnull().sum()
+df["loanAmount_log"] = np.log(df["LoanAmount"])
+df["loanAmount_log"].hist(bins=20)
+df["TotalIncome"] = df["ApplicantIncome"] + df["CoapplicantIncome"]
+df["TotalIncome_log"] = np.log(df["TotalIncome"])
+
+# Filling missing values with mode
+df["Gender"] = df["Gender"].fillna(df["Gender"].mode()[0])
+df["Married"] = df["Married"].fillna(df["Married"].mode()[0])
+df["Self_Employed"] = df["Self_Employed"].fillna(df["Self_Employed"].mode()[0])
+df["Dependents"] = df["Dependents"].fillna(df["Dependents"].mode()[0])
+df["Loan_Amount_Term"] = df["Loan_Amount_Term"].fillna(df["Loan_Amount_Term"].mode()[0])
+df["Credit_History"] = df["Credit_History"].fillna(df["Credit_History"].mode()[0])
+
+# Features and labels
+x = df.iloc[:, np.r_[1:5, 9:11, 13:15]].values
+y = df.iloc[:, 12].values
+
+# Data exploration using visualizations
+print("Number of people who take loans by gender:")
+print(df["Gender"].value_counts())
+sns.countplot(x="Gender", data=df, hue="Gender", palette="Set1", legend=False)
+plt.show()
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+# Label encoding
+Labelencoder_x = LabelEncoder()
+for i in range(0, 5):
+    X_train[:, i] = Labelencoder_x.fit_transform(X_train[:, i])
+    X_test[:, i] = Labelencoder_x.fit_transform(X_test[:, i])
+
+# Standardization
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Random Forest Classifier
+rf_clf = RandomForestClassifier()
+rf_clf.fit(X_train, y_train)
+y_pred = rf_clf.predict(X_test)
+print("Accuracy of Random Forest:", metrics.accuracy_score(y_test, y_pred))
+
+# Naive Bayes Classifier
+nb_clf = GaussianNB()
+nb_clf.fit(X_train, y_train)
+y_pred = nb_clf.predict(X_test)
+print("Accuracy of Naive Bayes:", metrics.accuracy_score(y_test, y_pred))
+
+# Decision Tree Classifier
+dt_clf = DecisionTreeClassifier()
+dt_clf.fit(X_train, y_train)
+y_pred = dt_clf.predict(X_test)
+print("Accuracy of Decision Tree:", metrics.accuracy_score(y_test, y_pred))
+
+# K-Nearest Neighbors Classifier
+kn_clf = KNeighborsClassifier()
+kn_clf.fit(X_train, y_train)
+y_pred = kn_clf.predict(X_test)
+print("Accuracy of K-Nearest Neighbors:", metrics.accuracy_score(y_test, y_pred))
