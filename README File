@@ -1,0 +1,63 @@
+# Loan Classification Project
+
+This project aims to classify loan applicants based on several features such as income, loan amount, and other attributes. The classification is done using multiple machine learning models, including Random Forest, Naive Bayes, Decision Tree, and K-Nearest Neighbors.
+
+## Dataset
+
+The dataset used in this project contains various details about loan applicants and their loan status. The data includes features such as:
+- Applicant Income
+- Coapplicant Income
+- Loan Amount
+- Loan Term
+- Credit History
+- Marital Status
+- Gender
+- Dependents
+
+## Steps
+
+1. **Data Preprocessing**:
+   - Missing values are handled by filling with the mode for categorical variables.
+   - The `LoanAmount` and `TotalIncome` columns are log-transformed for normalization.
+
+2. **Feature Selection**:
+   - Relevant features such as income, loan amount, and applicant status are selected for training the model.
+
+3. **Label Encoding and Scaling**:
+   - Categorical features are encoded using `LabelEncoder`.
+   - Feature scaling is done using `StandardScaler` to standardize the dataset.
+
+4. **Model Training and Evaluation**:
+   - Four machine learning models are used: Random Forest, Naive Bayes, Decision Tree, and K-Nearest Neighbors.
+   - Each model's accuracy is calculated to determine the best-performing model.
+
+## Results
+
+- Random Forest Accuracy: X%
+- Naive Bayes Accuracy: X%
+- Decision Tree Accuracy: X%
+- K-Nearest Neighbors Accuracy: X%
+
+## Dependencies
+
+- Python 3.x
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- scikit-learn
+
+## How to Run
+
+1. Clone the repository:
+
+
+2. Install the dependencies:
+
+
+3. Run the Python script:
+
+
+## License
+
+This project is licensed under the MIT License.
